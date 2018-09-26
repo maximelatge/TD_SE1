@@ -36,10 +36,10 @@ public class SortedHeap implements Heap<Integer> {
         int compteur = 0;
         int a = 2*posPere+1;
         int b = 2*posPere+2;
-        if(a<capacity && queue[a]!=null){
+        if(a<size){
             compteur++;
         }
-        if(b<capacity && queue[b]!=null){
+        if(b<size){
             compteur++;
         }
         return compteur;
