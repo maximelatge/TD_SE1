@@ -1,4 +1,5 @@
 package heap;
+import java.util.*;
 
 
 public class SortedHeap implements Heap<Integer> {
@@ -17,7 +18,7 @@ public class SortedHeap implements Heap<Integer> {
     }
 
     /* Fonction subsidières -----------------------------------------------------------------------------*/
-    public int posPere(int posFils){
+    private int posPere(int posFils){
         /*retourne la position du père; si le fils est la racine du heap alors retourne 0*/
         if (posFils>0) {
             if (posFils % 2 == 1) {
@@ -30,97 +31,149 @@ public class SortedHeap implements Heap<Integer> {
             return 0;
         }
     }
-    public int[] posFils(int posPere){
-        /*retourne la position des 2 fils*/
-        int tab[] = new int[2];
-        tab[0]=2*posPere+1; tab[1]=2*posPere+2;
-        return tab;
-    }
-/*------------------------------------------------------------------------------------------------------*/
-
-
-    public boolean insertElement(Integer e){
-        /*ajoute un elt dans le heap et retourne true si l'ajout s'est bien passé, false sinon. */
-        try {
-
-            if (this.size == this.capacity) {
-                /*cas ou il n'y a pas de place pour ajouter notre élément */
-
-                Integer queue2[] = new Integer[capacity*2];
-
-                for(int j=0;j<capacity;j++){
-                    queue2[j]=this.queue[j];
-                }
-                this.capacity=capacity*2;
-                this.queue = queue2;
-                /* est ce que l'on supprime l'ancienne queue ? */
-
-            }
-
-            /* procédure pour ajouter notre élément */
-            int pos = size;
-            queue[pos] = e;
-
-            int posp = posPere(pos);
-            Integer temp = queue[posp];
-            while (e > temp) {
-                queue[pos] = temp;
-                queue[posp] = e;
-                pos = posp;
-                posp = posPere(pos);
-                temp = queue[posp];
-            }
-            size++;
-
-
-        }catch(Exception pb){
-            return false;
-        }finally{
-            return true;
+    private int nbFils(int posPere){
+        /*retourne le nb de fils d'un elt du tas*/
+        int compteur = 0;
+        int a = 2*posPere+1;
+        int b = 2*posPere+2;
+        if(a<capacity && queue[a]!=null){
+            compteur++;
         }
-
-    }
-
-
-    public Integer element(){
-        /* retourne le plus grand élément de la liste sans l'enlever mais ne marche pas */
-        if(size==0){
-            //throw new NoSuchElementException;        comment ça marche?
-            return 0;
+        if(b<capacity && queue[b]!=null){
+            compteur++;
         }
-        else {
-            Integer m = queue[0];
-            Integer e = queue[0];
-            for (int i=1; i<capacity; i++){
-                e = queue[i];
-                if(e>m){
-                    m=e;
-                }
-            }
-            return m;
-        }
+        return compteur;
     }
 
-
-    public Integer popElement(){
-        /* retourne le plus grand élément de la liste en l'enlevant mais ne marche pas */
-        Integer elt = element();
-        return elt;
+    private boolean hasFils(int posPere){
+        return nbFils(posPere)!=0;
     }
 
+    private int posBiggestFils(int posPere){
+        /*retourne la position du plus grand des 2 fils en supposant qu'il a au moins un fils */
+        int nb = nbFils(posPere);
+        int posfa = 2*posPere+1;
+        int posfb = 2*posPere +2;
 
-    public boolean isEmpty(){
-        /* return true si le tas est vide*/
-        if(size==0){
-            return true;
+        if(nb==1){
+            return posfa;
         }
         else{
-            return false;
+            Integer vala = queue[posfa];
+            Integer valb = queue[posfb];
+            if(vala>valb){
+                return posfa;
+            }
+            else{
+                return posfb;
+            }
         }
     }
 
+    private void sortUp(int pos){
+        Integer e = queue[pos];
+        int posp = posPere(pos);
+        Integer temp = queue[posp];
+
+        while (e > temp || pos>0) {
+            queue[pos] = temp;
+            queue[posp] = e;
+            pos = posp;
+            posp = posPere(pos);
+            temp = queue[posp];
+        }
+    }
+
+    private void sortDown(int pos) {
+
+        Integer e = queue[pos];
+
+        if (hasFils(pos)) {
+
+            int posbf = posBiggestFils(pos);
+            Integer temp = queue[posbf];
+
+            while (temp > e && hasFils(pos)) {
+
+                queue[posbf] = e;
+                queue[pos] = temp;
+                pos = posbf;
+                if(hasFils(pos)) {
+                    posbf = posBiggestFils(pos);
+                    temp = queue[posbf];
+                }
+            }
+        }
+    }
+
+    /*------------------------------------------------------------------------------------------------------*/
+
+    /**
+     *
+     * @param e elt que l'on ajoute
+     * @return true si l'ajout de l'elt s'est bien passé, false sinon.
+     */
+    public boolean insertElement(Integer e) {
+        if (this.size == this.capacity) {
+            /*cas ou il n'y a pas de place pour ajouter notre élément */
+
+            this.queue = Arrays.copyOf(queue, capacity * 2);
+            this.capacity = capacity * 2;
+
+        }
+
+        /* procédure pour ajouter notre élément */
+        int pos = size;
+        queue[pos] = e;
+        sortUp(pos);
+        size++;
+
+        return true;
+    }
+
+    /**
+     *
+     * @return le plus grand elt de la liste sans l'enlever
+     * @throws NoSuchElementException
+     */
+    public Integer element()throws NoSuchElementException {
+            if (size == 0) {
+                throw new NoSuchElementException();
+            } else {
+                return queue[0];
+            }
+        }
+
+
+
+    public Integer popElement()throws NoSuchElementException {
+        if (size == 0) {
+            throw new NoSuchElementException();
+        } else {
+            Integer IntegerToReturn = queue[0];
+
+            size--;
+            queue[0]=queue[size];
+            queue[size]=null;
+            sortDown(0);
+
+            return IntegerToReturn;
+        }
+    }
+
+    /**
+     *
+     * @return true si le tas est vide
+     */
+    public boolean isEmpty(){
+        return size==0;
+    }
+
+    /**
+     *
+     * @return nb d'elt du tas
+     */
     public int size(){
-        /* return le nb d'elt du tas */
         return size;
     }
 

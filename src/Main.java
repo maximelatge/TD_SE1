@@ -13,8 +13,9 @@ public class Main {
         }
         System.out.println(test);
 
-        //Integer i = test.element();
-        //System.out.println(i);
+        Integer i = test.popElement();
+        System.out.println(i);
+        System.out.println(test);
 
 
     }
