@@ -1,5 +1,6 @@
 package heap;
 
+
 public class SortedHeap implements Heap<Integer> {
 
 
@@ -14,6 +15,8 @@ public class SortedHeap implements Heap<Integer> {
         this.queue = new Integer[this.capacity];
 
     }
+
+    /* Fonction subsidières -----------------------------------------------------------------------------*/
     public int posPere(int posFils){
         /*retourne la position du père; si le fils est la racine du heap alors retourne 0*/
         if (posFils>0) {
@@ -33,17 +36,24 @@ public class SortedHeap implements Heap<Integer> {
         tab[0]=2*posPere+1; tab[1]=2*posPere+2;
         return tab;
     }
+/*------------------------------------------------------------------------------------------------------*/
+
 
     public boolean insertElement(Integer e){
         /*ajoute un elt dans le heap et retourne true si l'ajout s'est bien passé, false sinon. */
         try {
 
-            if (this.size > this.capacity) {
+            if (this.size == this.capacity) {
                 /*cas ou il n'y a pas de place pour ajouter notre élément */
+
+                Integer queue2[] = new Integer[capacity*2];
+
+                for(int j=0;j<capacity;j++){
+                    queue2[j]=this.queue[j];
+                }
                 this.capacity=capacity*2;
-                Integer newqueue[] = new Integer[capacity];
-                newqueue = queue.clone();
-                this.queue = newqueue;
+                this.queue = queue2;
+                /* est ce que l'on supprime l'ancienne queue ? */
 
             }
 
@@ -52,7 +62,7 @@ public class SortedHeap implements Heap<Integer> {
             queue[pos] = e;
 
             int posp = posPere(pos);
-            int temp = queue[posp];
+            Integer temp = queue[posp];
             while (e > temp) {
                 queue[pos] = temp;
                 queue[posp] = e;
@@ -71,21 +81,47 @@ public class SortedHeap implements Heap<Integer> {
 
     }
 
+
     public Integer element(){
-        return 0;
+        /* retourne le plus grand élément de la liste sans l'enlever mais ne marche pas */
+        if(size==0){
+            //throw new NoSuchElementException;        comment ça marche?
+            return 0;
+        }
+        else {
+            Integer m = queue[0];
+            Integer e = queue[0];
+            for (int i=1; i<capacity; i++){
+                e = queue[i];
+                if(e>m){
+                    m=e;
+                }
+            }
+            return m;
+        }
     }
 
+
     public Integer popElement(){
-        return 0;
+        /* retourne le plus grand élément de la liste en l'enlevant mais ne marche pas */
+        Integer elt = element();
+        return elt;
     }
 
 
     public boolean isEmpty(){
-        return true;
+        /* return true si le tas est vide*/
+        if(size==0){
+            return true;
+        }
+        else{
+            return false;
+        }
     }
 
     public int size(){
-        return 0;
+        /* return le nb d'elt du tas */
+        return size;
     }
 
     public String toString(){

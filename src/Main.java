@@ -6,14 +6,16 @@ public class Main {
 
     public static void main(String[] args) {
 
-        SortedHeap test = new SortedHeap(11);
+        SortedHeap test = new SortedHeap(20);
 
-        for(int i=0;i<=10;i++) {
+        for(int i=0;i<10;i++) {
             test.insertElement(100+i);
         }
-        boolean a = test.insertElement(3);
-
-        System.out.println(a);
         System.out.println(test);
+
+        //Integer i = test.element();
+        //System.out.println(i);
+
+
     }
 }
