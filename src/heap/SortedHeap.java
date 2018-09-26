@@ -18,6 +18,12 @@ public class SortedHeap implements Heap<Integer> {
         if(posFils%2==1){return (posFils-1)/2;}
         else{return (posFils-2)/2;}
     }
+    public int[] posFils(int posPere){
+        /*retourne la position des 2 fils*/
+        int tab[] = new int[2];
+        tab[0]=2*posPere+1; tab[1]=2*posPere+2;
+        return tab;
+    }
 
     public boolean insertElement(Integer e){
         return true;
