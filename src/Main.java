@@ -24,7 +24,7 @@ public class Main {
 
 
 
-        //TEST ITERATOR
+        //TEST ITERATOR AVEC 2 BOUCLES !=
         /*
         Iterator<Integer> it = test.iterator();
 
