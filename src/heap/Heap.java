@@ -1,8 +1,9 @@
 package heap;
 
+
 import java.util.NoSuchElementException;
 
-    public interface Heap<E> /*extends Iterable<E>*/ {
+    public interface Heap<E> extends Iterable<E> {
         /** Add specified element into this Heap, increase capacity of the heap if not enough space
          *
          * @return true if the element was successfully added
@@ -30,4 +31,6 @@ import java.util.NoSuchElementException;
 
         /** Returns the number of elements contained in this heap */
         int size();
+
+
 }

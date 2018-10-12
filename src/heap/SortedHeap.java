@@ -2,7 +2,7 @@ package heap;
 import java.util.*;
 
 
-public class SortedHeap implements Heap<Integer> {
+public class SortedHeap implements Heap<Integer>{
 
 
     private int capacity;
@@ -16,6 +16,44 @@ public class SortedHeap implements Heap<Integer> {
         this.queue = new Integer[this.capacity];
 
     }
+
+    /*Iterateur ---------------------------------------------------------------------------------------*/
+
+    private class HeapIterator implements Iterator<Integer> {
+
+        private int cursor;
+
+        public HeapIterator(){
+            this.cursor = -1;
+        }
+
+        /*Returns true if the iteration has more elements.*/
+        public boolean hasNext(){
+            if(cursor == SortedHeap.this.capacity-1){
+                return false;
+            }
+            else{
+                if(SortedHeap.this.queue[cursor+1] != null){
+                    return true;
+                }
+                else{
+                    return false;
+                }
+            }
+        }
+
+        /*Returns the next element in the iteration.*/
+        public Integer next(){
+            return SortedHeap.this.queue[++cursor];
+        }
+    }
+
+    public Iterator<Integer> iterator(){
+        return new HeapIterator();
+    }
+
+    /*------------------------------------------------------------------------------------------------------*/
+
 
     /* Fonction subsidières -----------------------------------------------------------------------------*/
     private int posPere(int posFils){
@@ -46,8 +84,10 @@ public class SortedHeap implements Heap<Integer> {
     }
 
     private boolean hasFils(int posPere){
+        /*retourne True si le père à un fils ou plus   */
         return nbFils(posPere)!=0;
     }
+
 
     private int posBiggestFils(int posPere){
         /*retourne la position du plus grand des 2 fils en supposant qu'il a au moins un fils */
@@ -71,11 +111,12 @@ public class SortedHeap implements Heap<Integer> {
     }
 
     private void sortUp(int pos){
+        /*permet de ranger un élément lorsqu'il est ajouté à la fin*/
         Integer e = queue[pos];
         int posp = posPere(pos);
         Integer temp = queue[posp];
 
-        while (e > temp || pos>0) {
+        while (e > temp && pos>0) {
             queue[pos] = temp;
             queue[posp] = e;
             pos = posp;
@@ -85,7 +126,7 @@ public class SortedHeap implements Heap<Integer> {
     }
 
     private void sortDown(int pos) {
-
+        /*permet de reranger la liste lors de la suppression d'un élément */
         Integer e = queue[pos];
 
         if (hasFils(pos)) {
@@ -105,8 +146,8 @@ public class SortedHeap implements Heap<Integer> {
             }
         }
     }
-
     /*------------------------------------------------------------------------------------------------------*/
+
 
     /**
      *
