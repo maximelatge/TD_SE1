@@ -1,7 +1,5 @@
 import heap.*;
 
-import java.util.Iterator;
-
 public class Main {
 
 
@@ -38,11 +36,12 @@ public class Main {
 
         //  TEST POPELEMENT & ELEMENT
 
+        /*
         Integer j = test.element();
         Integer i = test.popElement();
         System.out.println("element() : " + j + " / popElement() : " + i +"\n");
         System.out.println(test);
-
+        */
 
     }
 }

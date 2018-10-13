@@ -25,7 +25,7 @@ public class SortedHeap implements Heap<Integer>{
 
         private int cursor;
 
-        public HeapIterator(){
+        private HeapIterator(){
             this.cursor = -1;
         }
 
@@ -35,12 +35,7 @@ public class SortedHeap implements Heap<Integer>{
                 return false;
             }
             else{
-                if(SortedHeap.this.queue[cursor+1] != null){
-                    return true;
-                }
-                else{
-                    return false;
-                }
+                return (SortedHeap.this.queue[cursor+1] != null);
             }
         }
 
@@ -118,7 +113,7 @@ public class SortedHeap implements Heap<Integer>{
         int posp = posPere(pos);
         Integer temp = queue[posp];
 
-        while (comparator.compare(e,temp) == 1 && pos>0) {
+        while (comparator.compare(e,temp) > 0 && pos>0) {
             queue[pos] = temp;
             queue[posp] = e;
             pos = posp;
@@ -136,7 +131,7 @@ public class SortedHeap implements Heap<Integer>{
             int posbf = posBiggestFils(pos);
             Integer temp = queue[posbf];
 
-            while (comparator.compare(e,temp) == -1 && hasFils(pos)) {
+            while (comparator.compare(e,temp) < 0 && hasFils(pos)) {
 
                 queue[posbf] = e;
                 queue[pos] = temp;
@@ -177,7 +172,7 @@ public class SortedHeap implements Heap<Integer>{
     /**
      *
      * @return le plus grand elt de la liste sans l'enlever
-     * @throws NoSuchElementException
+     * @throws NoSuchElementException si il n'y a pas de 1er élément.
      */
     public Integer element()throws NoSuchElementException {
             if (size == 0) {
