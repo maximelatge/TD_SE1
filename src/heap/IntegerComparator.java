@@ -2,9 +2,9 @@ package heap;
 
 import java.util.Comparator;
 
-public class HeapComparator implements Comparator<Integer> {
+public class IntegerComparator implements Comparator<Integer> {
 
-    public HeapComparator(){
+    public IntegerComparator(){
     }
 
     public int compare(Integer n1,Integer n2){

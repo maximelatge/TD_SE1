@@ -2,26 +2,26 @@ package heap;
 import java.util.*;
 
 
-public class SortedHeap implements Heap<Integer>{
+public class SortedHeap<E> implements Heap<E>{
 
 
     private int capacity;
     private int size;
-    private Integer queue[];
-    private Comparator<Integer> comparator;
+    private Object queue[];
+    private Comparator<E> comparator;
 
-    public SortedHeap(int capacity, Comparator<Integer> comparator){
+    public SortedHeap(int capacity, Comparator<E> comparator){
         /* Constructeur */
         this.capacity = capacity;
         this.size=0;
-        this.queue = new Integer[this.capacity];
+        this.queue = new Object[this.capacity];
         this.comparator = comparator;
 
     }
 
     /*Iterateur ---------------------------------------------------------------------------------------*/
 
-    private class HeapIterator implements Iterator<Integer> {
+    private class HeapIterator implements Iterator<E> {
 
         private int cursor;
 
@@ -40,12 +40,12 @@ public class SortedHeap implements Heap<Integer>{
         }
 
         /*Returns the next element in the iteration.*/
-        public Integer next(){
-            return SortedHeap.this.queue[++cursor];
+        public E next(){
+            return (E)SortedHeap.this.queue[++cursor];
         }
     }
 
-    public Iterator<Integer> iterator(){
+    public Iterator<E> iterator(){
         return new HeapIterator();
     }
 
@@ -96,9 +96,9 @@ public class SortedHeap implements Heap<Integer>{
             return posfa;
         }
         else{
-            Integer vala = queue[posfa];
-            Integer valb = queue[posfb];
-            if(vala>valb){
+            E vala = (E)queue[posfa];
+            E valb = (E)queue[posfb];
+            if(comparator.compare(vala,valb)>0){
                 return posfa;
             }
             else{
@@ -109,27 +109,27 @@ public class SortedHeap implements Heap<Integer>{
 
     private void sortUp(int pos){
         /*permet de ranger un élément lorsqu'il est ajouté à la fin*/
-        Integer e = queue[pos];
+        E e = (E)queue[pos];
         int posp = posPere(pos);
-        Integer temp = queue[posp];
+        E temp = (E)queue[posp];
 
         while (comparator.compare(e,temp) > 0 && pos>0) {
             queue[pos] = temp;
             queue[posp] = e;
             pos = posp;
             posp = posPere(pos);
-            temp = queue[posp];
+            temp = (E)queue[posp];
         }
     }
 
     private void sortDown(int pos) {
         /*permet de reranger la liste lors de la suppression d'un élément */
-        Integer e = queue[pos];
+        E e = (E)queue[pos];
 
         if (hasFils(pos)) {
 
             int posbf = posBiggestFils(pos);
-            Integer temp = queue[posbf];
+            E temp = (E)queue[posbf];
 
             while (comparator.compare(e,temp) < 0 && hasFils(pos)) {
 
@@ -138,7 +138,7 @@ public class SortedHeap implements Heap<Integer>{
                 pos = posbf;
                 if(hasFils(pos)) {
                     posbf = posBiggestFils(pos);
-                    temp = queue[posbf];
+                    temp = (E)queue[posbf];
                 }
             }
         }
@@ -151,7 +151,7 @@ public class SortedHeap implements Heap<Integer>{
      * @param e elt que l'on ajoute
      * @return true si l'ajout de l'elt s'est bien passé, false sinon.
      */
-    public boolean insertElement(Integer e) {
+    public boolean insertElement(E e) {
         if (this.size == this.capacity) {
             /*cas ou il n'y a pas de place pour ajouter notre élément */
 
@@ -174,28 +174,28 @@ public class SortedHeap implements Heap<Integer>{
      * @return le plus grand elt de la liste sans l'enlever
      * @throws NoSuchElementException si il n'y a pas de 1er élément.
      */
-    public Integer element()throws NoSuchElementException {
+    public E element()throws NoSuchElementException {
             if (size == 0) {
                 throw new NoSuchElementException();
             } else {
-                return queue[0];
+                return (E)queue[0];
             }
         }
 
 
 
-    public Integer popElement()throws NoSuchElementException {
+    public E popElement()throws NoSuchElementException {
         if (size == 0) {
             throw new NoSuchElementException();
         } else {
-            Integer IntegerToReturn = queue[0];
+            E ObjectToReturn = (E)queue[0];
 
             size--;
             queue[0]=queue[size];
             queue[size]=null;
             sortDown(0);
 
-            return IntegerToReturn;
+            return ObjectToReturn;
         }
     }
 
@@ -219,7 +219,7 @@ public class SortedHeap implements Heap<Integer>{
         /* permet d'afficher tous les éléments du heap */
         String str ="";
         for(int i=0;i<this.capacity;i++){
-            str+="position "+i+" : "+this.queue[i]+"\n";
+            str+=("position "+i+" : "+this.queue[i]+"\n");
         }
         return str;
     }
