@@ -8,12 +8,14 @@ public class SortedHeap implements Heap<Integer>{
     private int capacity;
     private int size;
     private Integer queue[];
+    private Comparator<Integer> comparator;
 
-    public SortedHeap(int capacity){
+    public SortedHeap(int capacity, Comparator<Integer> comparator){
         /* Constructeur */
-        this.capacity=capacity;
+        this.capacity = capacity;
         this.size=0;
         this.queue = new Integer[this.capacity];
+        this.comparator = comparator;
 
     }
 
@@ -116,7 +118,7 @@ public class SortedHeap implements Heap<Integer>{
         int posp = posPere(pos);
         Integer temp = queue[posp];
 
-        while (e > temp && pos>0) {
+        while (comparator.compare(e,temp) == 1 && pos>0) {
             queue[pos] = temp;
             queue[posp] = e;
             pos = posp;
@@ -134,7 +136,7 @@ public class SortedHeap implements Heap<Integer>{
             int posbf = posBiggestFils(pos);
             Integer temp = queue[posbf];
 
-            while (temp > e && hasFils(pos)) {
+            while (comparator.compare(e,temp) == -1 && hasFils(pos)) {
 
                 queue[posbf] = e;
                 queue[pos] = temp;

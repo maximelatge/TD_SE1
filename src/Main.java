@@ -1,4 +1,4 @@
-import heap.SortedHeap;
+import heap.*;
 
 import java.util.Iterator;
 
@@ -8,7 +8,7 @@ public class Main {
 
     public static void main(String[] args) {
 
-        SortedHeap test = new SortedHeap(20);
+        SortedHeap test = new SortedHeap(20, new HeapComparator());
 
         for(int i=0;i<10;i++) {
             test.insertElement(100+i);
@@ -37,12 +37,12 @@ public class Main {
         */
 
         //  TEST POPELEMENT & ELEMENT
-        /*
+
         Integer j = test.element();
         Integer i = test.popElement();
         System.out.println("element() : " + j + " / popElement() : " + i +"\n");
         System.out.println(test);
-        */
+
 
     }
 }
