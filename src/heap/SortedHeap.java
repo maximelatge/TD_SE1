@@ -207,6 +207,15 @@ public class SortedHeap<E> implements Heap<E>{
         return size==0;
     }
 
+    public E returnElement(int pos) throws NoSuchElementException{
+        if (pos>=size()){
+            throw new NoSuchElementException();
+        }
+        else return((E)queue[pos]);
+    }
+
+
+
     /**
      *
      * @return nb d'elt du tas

@@ -37,26 +37,5 @@ public class Main {
 
         System.out.println(stringHeap);
 
-        //integerHeap ITERATOR AVEC 2 BOUCLES !=
-        /*
-        Iterator<Integer> it = integerHeap.iterator();
-
-        while(it.hasNext()) {
-            System.out.println(it.next());
-        }
-        for (Integer i : integerHeap){
-            System.out.println(i);
-        }
-        */
-
-        //  integerHeap POPELEMENT & ELEMENT
-
-        /*
-        Integer j = integerHeap.element();
-        Integer i = integerHeap.popElement();
-        System.out.println("element() : " + j + " / popElement() : " + i +"\n");
-        System.out.println(integerHeap);
-        */
-
     }
 }
